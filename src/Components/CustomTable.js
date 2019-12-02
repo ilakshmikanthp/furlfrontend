@@ -1,7 +1,9 @@
 import React, { useState,useEffect } from 'react';
-import MaterialTable from 'material-table';
+import MaterialTable, { MTableToolbar } from 'material-table';
 import axios from 'axios';
+import TransitionsModal from './Modal';
 export default function CustomTable(props) {
+  const [open, setOpen] = React.useState(false);
   const [state, setState] = React.useState({
     columns: [
       { title: 'Entry_id', field: 'entry_id' },
@@ -44,26 +46,65 @@ export default function CustomTable(props) {
   ),
   []
 )
+const handleOpen = () => {
+  setOpen(true);
+};
+
+const handleClose = () => {
+  setOpen(false);
+};
+const handleSubmit = (newData) => {
+  axios.post('http://localhost:8000/v1/furldetail',newData).then(
+    (res)=>{
+      console.log('post',res);
+      setState(prevState => {
+        const data = [...prevState.data];
+        data.push(newData);
+        return { ...prevState, data };
+      });
+    }
+  )
+}
   return (
-    <MaterialTable
+    <div>
+       <div style={{ backgroundColor: '#e8eaf5' }}>
+              <TransitionsModal open={open} handleClose={handleClose} handleSubmit={handleSubmit} {...props} />
+          </div>
+          <MaterialTable
       title="Table"
       columns={state.columns}
       data={state.data}
+      actions={[
+        {
+          icon: 'add',
+          tooltip: 'Add User',
+          isFreeAction: true,
+          onClick: (event) =>  handleOpen()
+        }
+      ]}
+      components={{
+        Toolbar: props => (
+            <div style={{ backgroundColor: '#e8eaf5' }}>
+                <MTableToolbar {...props} />
+            </div>
+        ),
+        
+    }}
       editable={{
-        onRowAdd: newData =>
-          new Promise(resolve => {
-            axios.post('http://localhost:8000/v1/furldetail',newData).then(
-            (res)=>{
-              console.log('post',res);
-              resolve();
-              setState(prevState => {
-                const data = [...prevState.data];
-                data.push(newData);
-                return { ...prevState, data };
-              });
-            }
-          )
-          }),
+        // onRowAdd: newData =>
+        //   new Promise(resolve => {
+        //     axios.post('http://localhost:8000/v1/furldetail',newData).then(
+        //     (res)=>{
+        //       console.log('post',res);
+        //       resolve();
+        //       setState(prevState => {
+        //         const data = [...prevState.data];
+        //         data.push(newData);
+        //         return { ...prevState, data };
+        //       });
+        //     }
+        //   )
+        //   }),
         onRowUpdate: (newData, oldData) =>
           new Promise(resolve => {
             setTimeout(() => {
@@ -90,5 +131,7 @@ export default function CustomTable(props) {
           }),
       }}
     />
+    </div>
+    
   );
 }
