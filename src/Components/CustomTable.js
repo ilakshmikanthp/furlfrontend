@@ -6,7 +6,7 @@ export default function CustomTable(props) {
   const [open, setOpen] = React.useState(false);
   const [state, setState] = React.useState({
     columns: [
-      { title: 'Entry_id', field: 'entry_id' },
+      { title: 'Entry_id', field: 'id' },
       { title: 'Furl Description', field: 'furl_description' },
       { title: 'target', field: 'target' },
       {
@@ -15,10 +15,10 @@ export default function CustomTable(props) {
       },
       { title: 'description', field: 'description' },
       { title: 'upi', field: 'upi' },
-      { title: 'lead_contact', field: 'lead_contact' },
-      { title: 'date', field: 'date' },
-      { title: 'comments', field: 'comments' },
-      { title: 'team_dl', field: 'team_dl' },
+      // { title: 'lead_contact', field: 'lead_contact' },
+      // { title: 'date', field: 'date' },
+      // { title: 'comments', field: 'comments' },
+      // { title: 'team_dl', field: 'team_dl' },
 
     ]
   });
@@ -27,7 +27,7 @@ export default function CustomTable(props) {
     (res)=>{
       console.log('data',res.data.data);
       setState( {columns: [
-        { title: 'Entry_id', field: 'entry_id' },
+        { title: 'Entry_id', field: 'id' },
         { title: 'Furl Description', field: 'furl_description' },
         { title: 'target', field: 'target' },
         {
@@ -36,10 +36,10 @@ export default function CustomTable(props) {
         },
         { title: 'description', field: 'description' },
         { title: 'upi', field: 'upi' },
-        { title: 'lead_contact', field: 'lead_contact' },
-        { title: 'date', field: 'date' },
-        { title: 'comments', field: 'comments' },
-        { title: 'team_dl', field: 'team_dl' },
+        // { title: 'lead_contact', field: 'lead_contact' },
+        // { title: 'date', field: 'date' },
+        // { title: 'comments', field: 'comments' },
+        // { title: 'team_dl', field: 'team_dl' },
   
       ],data:res.data.data});
     }
@@ -56,10 +56,11 @@ const handleClose = () => {
 const handleSubmit = (newData) => {
   axios.post('http://localhost:8000/v1/furldetail',newData).then(
     (res)=>{
+      handleClose();
       console.log('post',res);
       setState(prevState => {
         const data = [...prevState.data];
-        data.push(newData);
+        data.push({ ... newData, id:res.data.data.id});
         return { ...prevState, data };
       });
     }
@@ -119,16 +120,16 @@ const handleSubmit = (newData) => {
             }, 600);
           }),
         onRowDelete: oldData =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              setState(prevState => {
-                const data = [...prevState.data];
-                data.splice(data.indexOf(oldData), 1);
-                return { ...prevState, data };
-              });
-            }, 600);
-          }),
+        axios.delete(`http://localhost:8000/v1/furldetail/${oldData.id}`).then(
+          (res)=>{
+            setState(prevState => {
+              const data = [...prevState.data];
+              data.splice(data.indexOf(oldData), 1);
+              return { ...prevState, data };
+            });
+          }
+        )
+              
       }}
     />
     </div>

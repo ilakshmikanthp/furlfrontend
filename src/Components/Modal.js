@@ -72,20 +72,24 @@ export default function TransitionsModal({ open, handleClose, handleSubmit }) {
           <div className={classes.paper}>
             <h2 id="transition-modal-title">Add FURL</h2>
             <Grid container spacing={3}>
-              <Grid item xs={4}>
+              {/* <Grid item xs={4}>
                 <Paper className={classes.paper}>
                   <TextField id="outlined-basic" label="Entry Id" variant="outlined" onChange={(event) => handleChange(event, "entry_id")} />
                 </Paper>
-              </Grid>
+              </Grid> */}
               <Grid item xs={4}>
                 <Paper className={classes.paper}>
-                  <TextField id="outlined-basic" label="Contact" variant="outlined" onChange={(event) => handleChange(event, "lead_contact")} />
+                  <TextField id="outlined-basic" label="Furl Description" name="furl_description" fullWidth variant="outlined" onChange={(event) => handleChange(event, "furl_description")} />
                 </Paper>
               </Grid>
               <Grid item xs={4}>
                 <Paper className={classes.paper}>
-                  <TextField id="outlined-basic" label="Alias" name="Alias" variant="outlined" onChange={(event) => handleChange(event, "furl_description")} />
-
+                  <TextField id="outlined-basic" label="Target" fullWidth variant="outlined" onChange={(event) => handleChange(event, "target")} />
+                </Paper>
+              </Grid>
+              <Grid item xs={4}>
+                <Paper className={classes.paper}>
+                  <TextField id="outlined-basic" label="Contact" fullWidth variant="outlined" onChange={(event) => handleChange(event, "lead_contact")} />
                 </Paper>
               </Grid>
               <Grid item xs={4}>
@@ -96,7 +100,7 @@ export default function TransitionsModal({ open, handleClose, handleSubmit }) {
                     label="Alias Location"
                     name="AliasLocation"
                     value={formData.AliasLocation}
-                    onChange={(event) => handleChange(event, "location")} variant="outlined"
+                    onChange={(event) => handleChange(event, "location")} fullWidth variant="outlined"
                   >
                     {locations.map(option => (
                       <MenuItem key={option.value} value={option.value}>
@@ -106,38 +110,31 @@ export default function TransitionsModal({ open, handleClose, handleSubmit }) {
                   </TextField>
                 </Paper>
               </Grid>
-
-
               <Grid item xs={4}>
                 <Paper className={classes.paper}>
-                  <TextField id="outlined-basic" label="Target" variant="outlined" onChange={(event) => handleChange(event, "target")} />
+                  <TextField id="outlined-basic" label="Description" fullWidth variant="outlined" onChange={(event) => handleChange(event, "description")} />
                 </Paper>
               </Grid>
               <Grid item xs={4}>
                 <Paper className={classes.paper}>
-                  <TextField id="outlined-basic" label="Description" variant="outlined" onChange={(event) => handleChange(event, "description")} />
-                </Paper>
-              </Grid>
-              <Grid item xs={4}>
-                <Paper className={classes.paper}>
-                  <TextField id="outlined-basic" label="UPI" variant="outlined" onChange={(event) => handleChange(event, "upi")} />
+                  <TextField id="outlined-basic" label="UPI" fullWidth variant="outlined" onChange={(event) => handleChange(event, "upi")} />
                 </Paper>
               </Grid>
 
 
               <Grid item xs={4}>
                 <Paper className={classes.paper}>
-                  <TextField id="outlined-basic" label="Phone" variant="outlined" onChange={(event) => handleChange(event, "Phone")} />
+                  <TextField id="outlined-basic" label="Phone" fullWidth variant="outlined" onChange={(event) => handleChange(event, "Phone")} />
                 </Paper>
               </Grid>
               <Grid item xs={4}>
                 <Paper className={classes.paper}>
-                  <TextField id="outlined-basic" label="Email" variant="outlined" onChange={(event) => handleChange(event, "Email")} />
+                  <TextField id="outlined-basic" label="Email" fullWidth variant="outlined" onChange={(event) => handleChange(event, "Email")} />
                 </Paper>
               </Grid>
               <Grid item xs={4}>
                 <Paper className={classes.paper}>
-                  <TextField id="outlined-basic" label="Unit" variant="outlined" onChange={(event) => handleChange(event, "Unit")} />
+                  <TextField id="outlined-basic" label="Unit" fullWidth variant="outlined" onChange={(event) => handleChange(event, "Unit")} />
                 </Paper>
               </Grid>
 
@@ -155,17 +152,17 @@ export default function TransitionsModal({ open, handleClose, handleSubmit }) {
                     multiline
                     rows="4"
                     // defaultValue="Default Value"
-                    variant="outlined"
+                    fullWidth variant="outlined"
                     onChange={(event) => handleChange(event, "comments")}
                   />          </Paper>
               </Grid>
 
             </Grid>
 
-
-            <Button variant="contained" color="primary" onClick={() => handleSubmit(formData)}>
+<br/>
+            <Button variant="contained" color="primary" onClick={() => handleSubmit(formData)} m={0.5}>
               Save
-            </Button>
+            </Button> &nbsp;
             <Button variant="contained" color="secondary" onClick={handleClose}>
               close
 </Button>
