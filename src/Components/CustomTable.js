@@ -4,6 +4,7 @@ import axios from 'axios';
 import TransitionsModal from './Modal';
 export default function CustomTable(props) {
   const [open, setOpen] = React.useState(false);
+  const [rowData, setRowData] = React.useState({});
   const [state, setState] = React.useState({
     columns: [
       { title: 'Entry_id', field: 'id' },
@@ -19,7 +20,6 @@ export default function CustomTable(props) {
       // { title: 'date', field: 'date' },
       // { title: 'comments', field: 'comments' },
       // { title: 'team_dl', field: 'team_dl' },
-
     ]
   });
   useEffect(()=>
@@ -54,6 +54,8 @@ const handleClose = () => {
   setOpen(false);
 };
 const handleSubmit = (newData) => {
+  console.log('newData',newData);
+  
   axios.post('http://localhost:8000/v1/furldetail',newData).then(
     (res)=>{
       handleClose();
@@ -69,7 +71,7 @@ const handleSubmit = (newData) => {
   return (
     <div>
        <div style={{ backgroundColor: '#e8eaf5' }}>
-              <TransitionsModal open={open} handleClose={handleClose} handleSubmit={handleSubmit} {...props} />
+              <TransitionsModal eachRowData={rowData.rowData} setRowData={setRowData} open={open} handleClose={handleClose} handleSubmit={handleSubmit} {...props} />
           </div>
           <MaterialTable
       title="Table"
@@ -81,6 +83,14 @@ const handleSubmit = (newData) => {
           tooltip: 'Add User',
           isFreeAction: true,
           onClick: (event) =>  handleOpen()
+        },{
+          icon: 'edit',
+          tooltip: 'Edit User',
+          onClick: (event,rowData) =>  {
+            console.log('rowData',rowData);
+            setRowData({rowData});
+            handleOpen()
+          }
         }
       ]}
       components={{
@@ -89,48 +99,47 @@ const handleSubmit = (newData) => {
                 <MTableToolbar {...props} />
             </div>
         ),
-        
     }}
-      editable={{
-        // onRowAdd: newData =>
-        //   new Promise(resolve => {
-        //     axios.post('http://localhost:8000/v1/furldetail',newData).then(
-        //     (res)=>{
-        //       console.log('post',res);
-        //       resolve();
-        //       setState(prevState => {
-        //         const data = [...prevState.data];
-        //         data.push(newData);
-        //         return { ...prevState, data };
-        //       });
-        //     }
-        //   )
-        //   }),
-        onRowUpdate: (newData, oldData) =>
-          new Promise(resolve => {
-            setTimeout(() => {
-              resolve();
-              if (oldData) {
-                setState(prevState => {
-                  const data = [...prevState.data];
-                  data[data.indexOf(oldData)] = newData;
-                  return { ...prevState, data };
-                });
-              }
-            }, 600);
-          }),
-        onRowDelete: oldData =>
-        axios.delete(`http://localhost:8000/v1/furldetail/${oldData.id}`).then(
-          (res)=>{
-            setState(prevState => {
-              const data = [...prevState.data];
-              data.splice(data.indexOf(oldData), 1);
-              return { ...prevState, data };
-            });
-          }
-        )
+      // editable={{
+      //   // onRowAdd: newData =>
+      //   //   new Promise(resolve => {
+      //   //     axios.post('http://localhost:8000/v1/furldetail',newData).then(
+      //   //     (res)=>{
+      //   //       console.log('post',res);
+      //   //       resolve();
+      //   //       setState(prevState => {
+      //   //         const data = [...prevState.data];
+      //   //         data.push(newData);
+      //   //         return { ...prevState, data };
+      //   //       });
+      //   //     }
+      //   //   )
+      //   //   }),
+      //   onRowUpdate: (newData, oldData) =>
+      //     new Promise(resolve => {
+      //       setTimeout(() => {
+      //         resolve();
+      //         if (oldData) {
+      //           setState(prevState => {
+      //             const data = [...prevState.data];
+      //             data[data.indexOf(oldData)] = newData;
+      //             return { ...prevState, data };
+      //           });
+      //         }
+      //       }, 600);
+      //     }),
+      //   onRowDelete: oldData =>
+      //   axios.delete(`http://localhost:8000/v1/furldetail/${oldData.id}`).then(
+      //     (res)=>{
+      //       setState(prevState => {
+      //         const data = [...prevState.data];
+      //         data.splice(data.indexOf(oldData), 1);
+      //         return { ...prevState, data };
+      //       });
+      //     }
+      //   )
               
-      }}
+      // }}
     />
     </div>
     

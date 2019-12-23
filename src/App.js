@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Header from './Components/Header';
 import CustomTable from './Components/CustomTable';
+import { withAdalLoginApi } from './adalConfig';
 function App() {
   
   return (
@@ -15,4 +16,5 @@ function App() {
   );
 }
 
-export default App;
+export default withAdalLoginApi(App);
+//export default App;
